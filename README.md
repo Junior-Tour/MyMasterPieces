@@ -1,2 +1,2 @@
 # myMasterPieces
-Some small project I made.
+Some small projects I made.
