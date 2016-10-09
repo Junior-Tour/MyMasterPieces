@@ -1,2 +1,2 @@
-# myMasterPieces
-Some small projects I made.
+# My Master Pieces
+There are some projects I made proudly.
