@@ -1,0 +1,279 @@
+
+  To do list:
+  1.解决多位数重复的问题。 /*completed*/
+  2.给符号按钮添加点击增加边框类的效果。Then I found this function is not adapted to keyboard response,
+  at last,i give up it.    /*completed*/
+  3.截短过长的浮点数，注意避免误差,即保留2位小数。    /*completed*/
+  4.给显示窗口增加内容较多时，字号变小的功能,且有一个最小限度。  /*completed*/
+  5.Clear()  /*completed*/
+                6.Float type,"." input. /*completed hardly at last*/
+/*<1>This sentence will loss accuracy.For example:3.321+0.0001=3.32000999999999994.
+In order to avoid it,i will do so hack.
+* <2>If directly input ".",the number 0 can not display.*/
+
+                7.keyboardListen().      /*completed*/
+  8.添加对于继承上一步的结果，连续计算的支持。   /*completed*/
+  9.避免连续快速点击按钮时，选中按钮文字的问题。  /*completed*/
+  10.Input number has a limited max length.   /*completed,not*/ Both Tow parameter!   /*completed*/
+                11.Compatibility between ff,chrome and ie8+.
+  12.运算过程中，添加允许改变符号的支持,and update the window。  /*completed*/
+                13.Decide whether display the sign in window,and handle the following problems.  /*completed*/
+  14.When two parameters and a operator is input,if get the another operator input,treat it as "=" and the input operator.    /*completed*/
+  15.Complete the "+/-","%" btn and its display.    /*completed inelegant*/
+  16.Responsive layout. /*completed easily.*/
+  17.Responsive font-size.  /*completed*/
+  18.When +/- and % apply to para2,display them simultaneously in the whole expression, not current  another expression.
+  /*completed*/
+  19.Forbid scale.
+  20.Solve the active window of safari on iphone.
+
+    Bugs:
+    1.IE之中添加边框时的抖动。
+    2.个别偶尔发生的计算错误，如111111*3。
+        /* 解决：原因是等于后忘记还原flag_of_operator了。*/
+    3.In ff,sometimes when press keyboard,it will select the character like mouse.
+    4.When long decimal outcome was used as parameter,it will not be omitted.    /*solved*/
+    5.During the debug,when click the browser window,it will begin to debug the onselectstart="return false;" attribute.
+    /*It seems like it is an normal behavior.*/
+    6.When had gotten an outcome,if input is ".",reset it to "0.".    /*solved*/
+    7.After clear(),"." input is invalid.    /*solved*/
+    8.Alert(9.87*100)   /*986.9999999999*/
+    /*solved by .toFixed(10),to round off it to 987.00000000.
+    Not absolutely accurate,but i have done my best.*/
+    9.0.0025 and 1.234506 incorrect.    /*Inspired suddenly!!!Solved it smartly!!In line 240.*/
+    10.The .active-border will cause layout shake.  /*solved*/
+    11.In safari of iphone,the window is active,it has a active window header and footer,
+    it causes incomplete display!
+    /*I have found millions of answers that indicate it is impossible to be solved now.
+    eg:http://stackoverflow.com/questions/24889100/
+    ios-8-removed-minimal-ui-viewport-property-are-there-other-soft-fullscreen/26884561#26884561
+    So i am tring some other way.......*/
+     /*solved eventually*/
+
+    12.The sensitivity of keyboard is not enough to input quickly,and i think it is /*unable to be solved.*/
+    13.Continue input number to a negative number or a % number,it should be a digit.    /*solved*/
+    14.-5+3,+/-,-3   /*solved*/
+    15.Disable scale.    /*solved*/
+    16.Though the td is box-sizing: border-box;,but the active-border class still have influence on height.
+    /*spend too much time on this project,I don't want to solve it at all.*/
+
+2016年9月9日16:23:50：
+  做的很快，JavaScript的弱类型、方便的字符串操作...用起来比C舒服多了！
+  一天时间就已经实现了多次计算。
+
+2016年9月17日21:37:51：
+    Still very comfortable.
+    80% completed!
+    Main part of left is float and compatibility.
+    And something details left,such as "."sign,"%" and "+/-".
+    And there is no error or warning in my js now,it is congratulated!
+
+2016年9月19日21:25:25：
+    Finished the important No.14 to do item.
+    Handling with some details.
+
+2016年9月22日20:56:50：
+    Still blocked by the float type part...
+
+2016年9月25日20:18:37：
+    90%.
+    Left +/- and % applied to para2.
+    And the responsive font-size.
+
+2016年9月28日20:23:54：
+    Deploy it to my server last night.
+    Find some bugs,and ready to solve it.
+
+2016年10月5日21:32:38：
+    Always stumbled by some little bugs.
+    I am going to mad!
+2016年10月6日16:58:15：
+    Finally,finally!I found the answer to the "not 100% height problem in ios safari".
+    It is produced by the padding of td,height of <td> is 80px,it is too big.
+    And increase the height of table#keyboard to 400px,overflow the viewport,covered by the foot bar of safari.
+    Originally,I think it is the fault of the address bar and foot bar of safari,
+    so I had lost in searching the solution of it several days.
+    2016年10月6日16:57:56.
+
+
+<!--<body onselectstart="return false;">-->
+<!--一个bug？有时一旦点击页面就会触发这个事件？？？   Normal.-->
+<!--Instead of mark the event directly in html,I finally declare it in js(line 17).
+    It has two advantages:
+    1.Avoid the bug of not enough height of <body>.
+    2.Separate mark and behavior.-->
+
+/*Old version(before 9.21)*/
+    //switch (input_value) {
+    //    //case (parseInt(input_value)>=0&&parseInt(input_value)<=9):
+    //        /*此处的一个问题：case的value似乎必须和input_value相关。上面这句就不行，运行时会被
+    //   ,直接跳过。*/
+    //    //case ("8"):
+    //        /*而上面这一句是可以运行的。*/
+    //    //case (int_input<=9):
+    //        /*也不行，跳过了。*/
+    //                                                                                                                    /*关于case value的问题，js高程（P60）也没说清。*/
+    //    case "number":
+    //        if (flag_float_input==1) {
+    //            operate_intermediary=operate_intermediary+int_input/10;
+    //        } else if (flag_float_input==-1) {
+    //            operate_intermediary=operate_intermediary*10+int_input;
+    //        }
+    //        calculate_process+=int_input;
+    //        break;
+    //    case ("+/-") :
+    //        operate_intermediary=-operate_intermediary;
+    //        calculate_process=operate_intermediary;
+    //        /*Can not complete the function that can display negative parameter2 and its operator.
+    //        * So I chose to jump from it with a inelegant way.*/
+    //        //if (flag_has_operator==-1) {
+    //        //    calculate_process=operate_intermediary;
+    //        //} else {
+    //        //    //calculate_process=para1.toString()+operate_intermediary;
+    //        //    calculate_process=operate_intermediary;
+    //        //}
+    //        break;
+    //    case ("%") :
+    //        operate_intermediary/=100;
+    //        /*Can not complete the function that can display parameter2 in percentage and its operator. */
+    //        calculate_process=operate_intermediary;
+    //        break;
+    //    case (".") :
+    //        /*暂时搁置对浮点数的处理,9.7.
+    //        * At last,handle with float type.*/
+    //        flag_float_input=1;
+    //        break;
+    //    case ("+") :
+    //        flag_operator=1;
+    //                                                                                                                    /*this part can be functioned!*/
+    //        if (flag_has_operator==-1) {
+    //            calculate_process+="+";
+    //        } else {
+    //            calculate_process=para1+"+";
+    //        }
+    //        break;
+    //    case ("-") :
+    //        flag_operator=2;
+    //        if (flag_has_operator==-1) {
+    //            calculate_process+="-";
+    //        } else {
+    //            calculate_process=para1+"-";
+    //        }
+    //        break;
+    //    case ("*") :
+    //        flag_operator=3;
+    //        if (flag_has_operator==-1) {
+    //            calculate_process+="×";
+    //        } else {
+    //            calculate_process=para1+"×";
+    //        }
+    //        break;
+    //    case ("/") :
+    //        flag_operator=4;
+    //        if (flag_has_operator==-1) {
+    //            calculate_process+="÷";
+    //        } else {
+    //            calculate_process=para1+"÷";
+    //        }
+    //        break;
+    //    case ("clear") :
+    //        flag_display=2;  /*value 2 indicate to clear()*/
+    //        break;
+    //    case ("=") :
+    //        if (para1==undefined||para2==undefined) {
+    //            break;
+    //        }
+    //        removeBorderedBtn();
+    //        flag_display=1;
+    //        switch (flag_operator) {
+    //            case 1:
+    //                outcome=para1+para2;
+    //                break;
+    //            case 2:
+    //                outcome=para1-para2;
+    //                break;
+    //            case 3:
+    //                outcome=para1*para2;
+    //                break;
+    //            case 4:
+    //                if(para1==0||para2==0) {
+    //                    outcome=0;
+    //                } else {
+    //                    outcome=para1/para2;
+    //                }
+    //                break;
+    //        }
+    //        if (flag_into_Circulation!=1) {
+    //            /*if have not recurred into calculate("=")*/
+    //            flag_operator=-1;    /*还原符号标志。*/
+    //        }
+    //        break;
+    //}
+
+    /*Original line 301+:*/
+
+/*1.Use .match() method and regular expression to match +--*,so that we can manage
+ * the c_p string.
+ * 2.Many flags.*/
+//if (flag_operator!=-1) {
+//    calculate_process=calculate_process.substring(0,calculate_process.indexOf("+"))+"+"+operate_intermediary;
+//} else {
+//    calculate_process=operate_intermediary;
+//}
+/*Can not complete the function that can display negative parameter2 and its operator.
+ * So I chose to jump from it with a inelegant way.*/
+//if (flag_has_operator==-1) {
+//    calculate_process=operate_intermediary;
+//} else {
+//    //calculate_process=para1.toString()+operate_intermediary;
+//    calculate_process=operate_intermediary;
+//}
+
+
+/*Old version of limited input length:*/
+//if(cal_window.innerHTML.toString().length>=9&&input_value=="number"&&flag_operator!=-1) return false;
+
+
+
+/*old version of float input:*/
+//operate_intermediary=operate_intermediary+int_input/(Math.pow(10,decimal_length));
+//operate_intermediary=operate_intermediary+int_input/10;
+
+/*Old version type judge in line 185+:*/
+
+    //if (int_input>=0&&int_input<=9) {
+    //    /*use int_input to test the input_value,if i_v is number,then change its value to "number",
+    //     ,indicate to number type input:*/
+    //    input_type="number";
+    //    /*after once calculation,when input is number, restore all the variables:*/
+    //    if (flag_display!=-1) {
+    //        calculate_process="";
+    //        flag_display=-1;
+    //        para1=undefined;
+    //        para2=undefined;
+    //    }
+    //}
+    //if (input_value=="+"||input_value=="-"||input_value=="*"||input_value=="/") {
+    //    input_type="operator";
+    //    /*after input an operator,switch flag_float_input to off(-1)*/
+    //    if (flag_float_input==1) {
+    //        flag_float_input=-1;
+    //    }
+    //}
+    //if (input_value=="%"||input_value=="."||input_value=="clear"||input_value=="="||input_value=="+/-") {
+    //    input_type="special";
+    //}
+
+/*Old version of font-size in line 377+:*/
+
+    /*the rate of change of the size is not fixed,it should be dynamic!
+     *1-6,no changes,always 120px;6-8,minus 15px per char input till 90px;9,80px,10,70px,11,65px,12,60,13,55,14,50,15,45,16,40,17,35,18-n,min size 35px (can contain 19 characters,9 digits of para1,9 of para2,1 sign)*/
+    //if(outcome.toString().length>=6&&outcome.toString().length<=12) {
+    //    var font_size_number=120-15*(outcome.toString().length-6);
+    //    cal_window.style.fontSize=font_size_number+"px";
+    //}
+
+    //if(calculate_process.length>=6&&calculate_process.length<=12) {
+    //    var font_size_number=120-15*(calculate_process.length-6);
+    //    cal_window.style.fontSize=font_size_number+"px";
+    //}

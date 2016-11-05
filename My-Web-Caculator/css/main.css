@@ -1,0 +1,121 @@
+table,tr,td,input {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+    /*A hack used to let 100% height valid.*/
+}
+body {
+    height: 100%;
+    /*A hack used to let 100% height valid.*/
+    -moz-user-select:none;
+    margin: 0;
+}
+.container {
+    width:474px;
+    height:800px;
+    margin: 0 auto;
+    font: 25px/1 "microsoft yahei",sans-serif;
+    color: black;
+}
+.outcome-window {
+    width:100%;
+    height:27.3%;
+    background-color: rgb(32,32,32);
+    position: relative;
+}
+.outcome-window p {
+    cursor: default;
+    width:90%;
+    max-width: 90%;
+    text-align: right;
+    font-size: 4.8em;
+    color: #fff;
+    background-color: transparent;
+    padding: 5% 5%;
+    border: none;
+    margin: 0;
+    outline: none;
+    position: absolute;
+    bottom: 0;
+}
+table {
+    width:100%;
+    height:72.7%;
+    background-color: rgb(202,202,205);
+    border-collapse: collapse;
+    border: 3px solid black;
+}
+table tr:first-child {
+    background-color: rgb(190,190,190);
+}
+td {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 2em;
+    font-weight:lighter;
+    width:25%;
+    height: 20%;
+    text-align: center;
+    border: 1px solid black;
+    padding: 14px;
+}
+.special-button td {
+    font-size: 1.6em;
+}
+table td:last-child {
+    font-size: 2em;
+    color: white;
+    background-color: rgb(249,137,16);
+}
+table td:last-child:active {
+    background-color: rgb(229,117,0);
+}
+table td:active {
+    background-color: rgb(181,181,181);
+}
+td.active-border {
+    border: 3px solid black;
+    /*position: absolute;*/
+    /*top:0;*/
+    /*left:0;*/
+}
+/*Responsive design:
+Mainly about
+1.the width and height of container
+2.the font size*/
+
+/*After refer to some examples,I decided to treat the ipad similar to pc.*/
+
+@media (min-width:320px) and (max-width: 473px) {
+    .container {
+        width:100%;
+        height: 100%;
+    }
+    table td:last-child {
+        font-size: 1.5em;
+    }
+    td {
+        font-size: 1.5em;
+    }
+    .special-button td {
+        font-size: 1em;
+    }
+}
+@media (min-width:320px) and (max-width: 350px) {
+    .outcome-window {
+        font-size: 18px;
+    }
+}
+@media (min-width: 351px) and (max-width: 379px) {
+    .outcome-window {
+        font-size: 20px;
+    }
+}
+@media (min-width:380px) and (max-width: 473px) {
+    .outcome-window {
+        font-size: 22px;
+    }
+}
